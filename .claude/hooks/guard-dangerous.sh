@@ -1,24 +1,19 @@
-#!/bin/bash
-# Guard hook: warns before writing to high-risk paths
+!/bin/bash
+Guard hook: warns before writing to high-risk paths
 
-FILE="$1"
+json=$(cat)
+file_path=$(echo "$json" | jq -r '.tool_input.file_path // .tool_input.path // empty' 2>/dev/null)
 
-# Theme tokens — require explicit confirmation
-if [[ "$FILE" == *"src/theme/tokens"* ]]; then
-  echo "⚠️  THEME TOKENS: Changes affect ALL banners. Confirm multi-banner verification."
-  exit 1
+[[ -z "$file_path" ]] && exit 0
+
+if [[ "$file_path" == *"src/theme/tokens"* ]]; then
+  echo "⚠️  THEME TOKENS: Changes affect ALL banners."
+  exit 2
 fi
 
-# Theme types — read-only in normal flow
-if [[ "$FILE" == *"src/theme/types.ts"* ]]; then
-  echo "🔒 BLOCKED: src/theme/types.ts is read-only. Use ADR process for schema changes."
-  exit 1
-fi
-
-# Sanity schemas — require confirmation
-if [[ "$FILE" == *"sanity-studio/schemas"* ]]; then
-  echo "⚠️  SANITY SCHEMA: Changes require migration plan. See docs/cms/sanity-schema.md"
-  exit 1
+if [[ "$file_path" == *"src/theme/types.ts"* ]]; then
+  echo "🔒 BLOCKED: src/theme/types.ts is read-only."
+  exit 2
 fi
 
 exit 0

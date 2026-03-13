@@ -1,0 +1,19 @@
+{
+  "name": "sanity-seed",
+  "private": true,
+  "scripts": {
+    "seed": "ts-node index.ts",
+    "seed:dev": "SANITY_DATASET=development ts-node index.ts",
+    "seed:staging": "SANITY_DATASET=staging ts-node index.ts",
+    "clean": "ts-node clean.ts"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.0.0",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

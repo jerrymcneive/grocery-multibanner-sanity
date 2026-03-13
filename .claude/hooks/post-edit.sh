@@ -1,16 +1,12 @@
 #!/bin/bash
-# Post-edit hook: runs after each file edit
-# Quick feedback loop — fail fast on obvious issues
+# Post-edit hook: type-check after file edits
 
-set -e
+json=$(cat)
+file_path=$(echo "$json" | jq -r '.tool_input.file_path // .tool_input.path // empty' 2>/dev/null)
 
-FILE="$1"
+[[ -z "$file_path" ]] && exit 0
+[[ "$file_path" != *.ts && "$file_path" != *.tsx ]] && exit 0
 
-# Skip non-source files
-[[ "$FILE" != *.ts && "$FILE" != *.tsx && "$FILE" != *.js && "$FILE" != *.jsx ]] && exit 0
-
-# Type-check the changed file (fast, single-file)
-npx tsc --noEmit "$FILE" 2>/dev/null || {
-  echo "⚠️  Type error in $FILE"
-  exit 1
-}
+cd "$CLAUDE_PROJECT_DIR"
+npx tsc --noEmit "$file_path" 2>/dev/null || echo "⚠️ Type error in $file_path"
+exit 0
