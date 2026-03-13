@@ -1,5 +1,5 @@
-!/bin/bash
-Session Start Hook — prints context reminder
+#!/bin/bash
+# Session Start Hook — prints project context reminder
 
 cat << 'BANNER'
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

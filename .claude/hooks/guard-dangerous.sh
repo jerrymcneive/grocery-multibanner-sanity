@@ -1,5 +1,5 @@
-!/bin/bash
-Guard hook: warns before writing to high-risk paths
+#!/bin/bash
+# Guard hook: warns before writing to high-risk paths
 
 json=$(cat)
 file_path=$(echo "$json" | jq -r '.tool_input.file_path // .tool_input.path // empty' 2>/dev/null)
