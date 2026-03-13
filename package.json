@@ -1,0 +1,20 @@
+{
+  "name": "grocery-multibanner-sanity",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@grocery-multibanner/web",
+    "dev:mobile": "turbo run dev --filter=@grocery-multibanner/mobile",
+    "dev:sanity": "turbo run dev --filter=grocery-multibanner-sanity-studio",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "theme:verify": "node scripts/theme-verify.js"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}

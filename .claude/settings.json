@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "post_edit": ".claude/hooks/post-edit.sh",
+    "pre_commit": ".claude/hooks/pre-commit.sh",
+    "file_write": ".claude/hooks/guard-dangerous.sh",
+    "session_start": ".claude/hooks/session-start.js",
+    "session_end": ".claude/hooks/session-end.js"
+  },
+  "permissions": {
+    "blocked_paths": [
+      "src/theme/tokens",
+      "src/theme/types.ts",
+      "sanity-studio/schemas"
+    ],
+    "require_confirmation": [
+      "src/theme",
+      "src/rewards",
+      "sanity-studio"
+    ],
+    "allowed_commands": [
+      "pnpm:*",
+      "npx:*",
+      "git:*",
+      "gh:*",
+      "tsc:*",
+      "sanity:*"
+    ]
+  },
+  "marketplace_skills": [
+    "react-native",
+    "next-js",
+    "sanity-cms",
+    "typescript"
+  ],
+  "agents": [
+    ".claude/agents/security-reviewer.md",
+    ".claude/agents/code-reviewer.md",
+    ".claude/agents/debugger.md",
+    ".claude/agents/software-architect.md"
+  ]
+}
