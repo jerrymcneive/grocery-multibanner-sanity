@@ -1,35 +1,110 @@
 import { StructureBuilder } from 'sanity/structure'
 
+const BANNERS = [
+  { title: '🎪 Festival Foods',   id: 'festival-foods' },
+  { title: '🏡 Hometown Grocers', id: 'hometown-grocers' },
+  // { title: '🛒 Schnucks', id: 'schnucks' }, // Future phase
+]
+
 export const deskStructure = (S: StructureBuilder) =>
   S.list()
     .title('Content')
     .items([
-      // Banner Configuration (singletons)
+
+      // ── Weekly Ad ────────────────────────────────────────────────────────
       S.listItem()
-        .title('Banner Configuration')
+        .title('Weekly Ad')
         .child(
           S.list()
-            .title('Banners')
+            .title('Weekly Ad')
             .items([
               S.listItem()
-                .title('🎪 Festival Foods')
-                .child(
-                  S.document()
-                    .schemaType('bannerConfig')
-                    .documentId('banner-festival-foods')
-                ),
+                .title('Ad Editions')
+                .child(S.documentTypeList('weeklyAdBase').title('Weekly Ads')),
               S.listItem()
-                .title('🏡 Hometown Grocers')
+                .title('Banner Overrides')
                 .child(
-                  S.document()
-                    .schemaType('bannerConfig')
-                    .documentId('banner-hometown-grocers')
+                  S.list()
+                    .title('Overrides by Banner')
+                    .items(
+                      BANNERS.map((b) =>
+                        S.listItem()
+                          .title(b.title)
+                          .child(
+                            S.documentTypeList('weeklyAdBannerOverride')
+                              .title(`${b.title} Overrides`)
+                              .filter('_type == "weeklyAdBannerOverride" && banner == $bannerId')
+                              .params({ bannerId: b.id })
+                          )
+                      )
+                    )
                 ),
             ])
         ),
+
+      // ── Campaigns & Promotions ────────────────────────────────────────────
+      S.listItem()
+        .title('Campaigns & Promotions')
+        .child(
+          S.list()
+            .title('Campaigns')
+            .items(
+              BANNERS.map((b) =>
+                S.listItem()
+                  .title(b.title)
+                  .child(
+                    S.documentTypeList('campaign')
+                      .title(`${b.title} Campaigns`)
+                      .filter('_type == "campaign" && $bannerId in banners')
+                      .params({ bannerId: b.id })
+                  )
+              )
+            )
+        ),
+
+      // ── Featured Content ──────────────────────────────────────────────────
+      S.listItem()
+        .title('Featured Content')
+        .child(
+          S.list()
+            .title('Featured Content by Banner')
+            .items(
+              BANNERS.map((b) =>
+                S.listItem()
+                  .title(b.title)
+                  .child(
+                    S.documentTypeList('featuredContent')
+                      .title(`${b.title} Featured`)
+                      .filter('_type == "featuredContent" && banner == $bannerId')
+                      .params({ bannerId: b.id })
+                  )
+              )
+            )
+        ),
+
+      // ── Store Messages ────────────────────────────────────────────────────
+      S.listItem()
+        .title('Store Messages')
+        .child(S.documentTypeList('storeMessage').title('Store Messages')),
+
       S.divider(),
-      // Content by type
-      S.documentTypeListItem('storeMessage').title('Store Messages'),
-      S.documentTypeListItem('weeklyAdBase').title('Weekly Ads'),
-      S.documentTypeListItem('weeklyAdBannerOverride').title('Weekly Ad Overrides'),
+
+      // ── Banner Settings ───────────────────────────────────────────────────
+      S.listItem()
+        .title('Banner Settings')
+        .child(
+          S.list()
+            .title('Banner Settings')
+            .items(
+              BANNERS.map((b) =>
+                S.listItem()
+                  .title(b.title)
+                  .child(
+                    S.document()
+                      .schemaType('bannerConfig')
+                      .documentId(`banner-${b.id}`)
+                  )
+              )
+            )
+        ),
     ])

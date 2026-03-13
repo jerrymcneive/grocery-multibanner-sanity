@@ -8,8 +8,8 @@ export default defineConfig({
   name: 'grocery-multibanner-sanity',
   title: 'Schnucks Omnichannel CMS',
 
-  projectId: process.env.SANITY_PROJECT_ID || 'your-project-id',
-  dataset: process.env.SANITY_DATASET || 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '15lskz7p',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'development',
 
   plugins: [
     structureTool({

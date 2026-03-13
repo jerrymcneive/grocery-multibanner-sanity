@@ -1,0 +1,58 @@
+import type { WeeklyAdDTO } from '@grocery-multibanner/cms-adapters'
+
+export const festivalFoodsWeeklyAd: WeeklyAdDTO = {
+  id: 'fixture-ff-weekly-ad-001',
+  internalTitle: 'Festival Foods Week of March 9',
+  weekOf: '2026-03-09',
+  validFrom: '2026-03-09T00:00:00Z',
+  validUntil: '2026-03-15T23:59:59Z',
+  heroHeadline: 'Fresh Savings This Week!',
+  promotionalCopy: 'Stock up on your favorites with incredible deals all week long.',
+  heroImageUrl: 'https://placehold.co/1200x400/2D6A2D/FFFFFF?text=Festival+Foods+Weekly+Ad',
+  items: [
+    {
+      productName: 'Fresh Atlantic Salmon',
+      imageUrl: 'https://placehold.co/400x400/2D6A2D/FFFFFF?text=Salmon',
+      regularPriceCents: 1299,
+      salePriceCents: 899,
+      priceUnit: 'lb',
+      dealType: 'sale',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Organic Strawberries',
+      imageUrl: 'https://placehold.co/400x400/F4A823/1A1A1A?text=Strawberries',
+      regularPriceCents: 599,
+      salePriceCents: 349,
+      priceUnit: 'pk',
+      dealType: 'bogo',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Rotisserie Chicken',
+      imageUrl: 'https://placehold.co/400x400/E8521A/FFFFFF?text=Chicken',
+      regularPriceCents: 999,
+      salePriceCents: 699,
+      priceUnit: 'ea',
+      dealType: 'sale',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Aged Cheddar Block',
+      imageUrl: 'https://placehold.co/400x400/F4A823/1A1A1A?text=Cheddar',
+      regularPriceCents: 799,
+      priceUnit: 'ea',
+      dealType: 'points',
+      loyaltyExclusive: true,
+    },
+    {
+      productName: 'Whole Grain Bread',
+      imageUrl: 'https://placehold.co/400x400/2D6A2D/FFFFFF?text=Bread',
+      regularPriceCents: 449,
+      salePriceCents: 299,
+      priceUnit: 'ea',
+      dealType: 'mix-match',
+      loyaltyExclusive: false,
+    },
+  ],
+}

@@ -14,7 +14,9 @@
     "theme:verify": "node scripts/theme-verify.js"
   },
   "devDependencies": {
+    "@sanity/client": "^6.0.0",
     "turbo": "^2.0.0",
     "typescript": "^5.0.0"
-  }
+  },
+  "packageManager": "pnpm@9.1.0"
 }

@@ -1,41 +1,69 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "hooks": {
-    "post_edit": ".claude/hooks/post-edit.sh",
-    "pre_commit": ".claude/hooks/pre-commit.sh",
-    "file_write": ".claude/hooks/guard-dangerous.sh",
-    "session_start": ".claude/hooks/session-start.js",
-    "session_end": ".claude/hooks/session-end.js"
-  },
-  "permissions": {
-    "blocked_paths": [
-      "src/theme/tokens",
-      "src/theme/types.ts",
-      "sanity-studio/schemas"
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-dangerous.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/pre-commit.sh",
+            "timeout": 60
+          }
+        ]
+      }
     ],
-    "require_confirmation": [
-      "src/theme",
-      "src/rewards",
-      "sanity-studio"
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit.sh",
+            "timeout": 30
+          }
+        ]
+      }
     ],
-    "allowed_commands": [
-      "pnpm:*",
-      "npx:*",
-      "git:*",
-      "gh:*",
-      "tsc:*",
-      "sanity:*"
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.sh"
+          }
+        ]
+      }
     ]
   },
-  "marketplace_skills": [
-    "react-native",
-    "next-js",
-    "sanity-cms",
-    "typescript"
-  ],
-  "agents": [
-    ".claude/agents/security-reviewer.md",
-    ".claude/agents/code-reviewer.md",
-    ".claude/agents/debugger.md",
-    ".claude/agents/software-architect.md"
-  ]
+  "permissions": {
+    "deny": [
+      "Edit(src/theme/tokens/**)",
+      "Write(src/theme/tokens/**)",
+      "Edit(src/theme/types.ts)",
+      "Write(src/theme/types.ts)"
+    ]
+  }
 }

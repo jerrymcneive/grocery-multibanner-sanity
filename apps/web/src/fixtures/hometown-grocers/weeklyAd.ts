@@ -1,0 +1,58 @@
+import type { WeeklyAdDTO } from '@grocery-multibanner/cms-adapters'
+
+export const hometownGrocersWeeklyAd: WeeklyAdDTO = {
+  id: 'fixture-hg-weekly-ad-001',
+  internalTitle: 'Hometown Grocers Week of March 9',
+  weekOf: '2026-03-09',
+  validFrom: '2026-03-09T00:00:00Z',
+  validUntil: '2026-03-15T23:59:59Z',
+  heroHeadline: 'Your Neighborhood, Your Savings',
+  promotionalCopy: 'Locally sourced favorites at prices that bring the community together.',
+  heroImageUrl: 'https://placehold.co/1200x400/8B2635/FFFFFF?text=Hometown+Grocers+Weekly+Ad',
+  items: [
+    {
+      productName: 'Local Farm Eggs',
+      imageUrl: 'https://placehold.co/400x400/8B2635/FFFFFF?text=Eggs',
+      regularPriceCents: 649,
+      salePriceCents: 449,
+      priceUnit: 'ea',
+      dealType: 'sale',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Artisan Sourdough',
+      imageUrl: 'https://placehold.co/400x400/4A7C59/FFFFFF?text=Sourdough',
+      regularPriceCents: 699,
+      salePriceCents: 499,
+      priceUnit: 'ea',
+      dealType: 'sale',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Heritage Pork Chops',
+      imageUrl: 'https://placehold.co/400x400/8B2635/FFFFFF?text=Pork+Chops',
+      regularPriceCents: 1099,
+      salePriceCents: 799,
+      priceUnit: 'lb',
+      dealType: 'coupon',
+      loyaltyExclusive: false,
+    },
+    {
+      productName: 'Raw Local Honey',
+      imageUrl: 'https://placehold.co/400x400/D4AC0D/1A1A1A?text=Honey',
+      regularPriceCents: 1199,
+      priceUnit: 'ea',
+      dealType: 'points',
+      loyaltyExclusive: true,
+    },
+    {
+      productName: 'Seasonal Mixed Greens',
+      imageUrl: 'https://placehold.co/400x400/4A7C59/FFFFFF?text=Greens',
+      regularPriceCents: 499,
+      salePriceCents: 299,
+      priceUnit: 'ea',
+      dealType: 'bogo',
+      loyaltyExclusive: false,
+    },
+  ],
+}
