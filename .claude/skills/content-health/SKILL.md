@@ -46,22 +46,25 @@ Flag as **critical** — broken references cause runtime errors in the front end
 
 Do NOT call `get_document` per reference — use the two-query batch approach above.
 
-Known reference fields in this schema (verify against deployed schema for changes):
-- `weeklyAdBannerOverride.weeklyAdBase` → references `weeklyAdBase`
+Always derive the full reference-field list from `get_schema` output — do not rely on a hardcoded
+list. As an example: at initial schema, `weeklyAdBannerOverride.weeklyAdBase` was the only
+reference field, but this will change as the schema grows.
 
 ### Step 3 — Per-banner content coverage
 For each Phase 1 banner (`festival-foods`, `hometown-grocers`), check that banner-scoped
 document types have at least one published document. Use the correct filter for each type's
 field shape (field shape differs per type — see `src/sanity/CLAUDE.md` Rule 3):
 
+Do not query `weeklyAdBase` — it carries no banner field and is not banner-scoped. Check only:
+- String-field types (`bannerConfig`, `featuredContent`, `weeklyAdBannerOverride`): use `banner == $banner`
+- Array-field types (`campaign`, `storeMessage`): use `$banner in banners[]`
+
 ```groq
-// Types with single `banner` string field: bannerConfig, featuredContent, weeklyAdBannerOverride
+// String-field types: bannerConfig, featuredContent, weeklyAdBannerOverride
 *[_type == "X" && banner == $banner && !(_id in path("drafts.**"))][0]{ _id }
 
-// Types with `banners` array field: campaign, storeMessage
+// Array-field types: campaign, storeMessage
 *[_type == "X" && $banner in banners[] && !(_id in path("drafts.**"))][0]{ _id }
-
-// weeklyAdBase is not banner-scoped — skip
 ```
 
 Flag as **info** if a banner has zero published documents for a content type — may be expected

@@ -9,15 +9,16 @@ if ! command -v jq &>/dev/null; then
 fi
 
 json=$(cat)
-jq_stderr=$(printf '%s' "$json" | jq -r '.tool_input.file_path // .tool_input.path // empty' 2>&1)
+jq_output=$(printf '%s' "$json" | jq -r '.tool_input.file_path // .tool_input.path // empty' 2>/dev/null)
 jq_exit=$?
 
 if [[ $jq_exit -ne 0 ]]; then
-  echo "⚠️  post-edit hook: failed to parse hook payload (jq exit $jq_exit)" >&2
+  jq_error=$(printf '%s' "$json" | jq -r '.' 2>&1 | head -1)
+  echo "⚠️  post-edit hook: failed to parse hook payload (jq exit $jq_exit: $jq_error)" >&2
   exit 0
 fi
 
-file_path="$jq_stderr"
+file_path="$jq_output"
 [[ -z "$file_path" ]] && exit 0
 
 # --- CMS reminder (fires for all file types in CMS dirs) ---
@@ -46,7 +47,10 @@ if [[ -z "$CLAUDE_PROJECT_DIR" || ! -d "$CLAUDE_PROJECT_DIR" ]]; then
   exit 0
 fi
 
-cd "$CLAUDE_PROJECT_DIR"
+if ! cd "$CLAUDE_PROJECT_DIR"; then
+  echo "⚠️  post-edit hook: could not cd to CLAUDE_PROJECT_DIR ($CLAUDE_PROJECT_DIR) — typecheck skipped." >&2
+  exit 0
+fi
 
 # --- Run typecheck ---
 output=$(pnpm --filter "$filter" typecheck 2>&1)
@@ -55,8 +59,8 @@ pnpm_exit=$?
 if [[ $pnpm_exit -ne 0 ]]; then
   errors=$(echo "$output" | grep -E "error TS" | head -5)
   if [[ -n "$errors" ]]; then
-    echo "⚠️  Type errors in $filter:"
-    echo "$errors"
+    echo "⚠️  Type errors in $filter:" >&2
+    echo "$errors" >&2
   else
     # pnpm failed but not due to TS errors (missing script, workspace issue, etc.)
     echo "⚠️  Typecheck could not run for $filter — check pnpm setup:" >&2

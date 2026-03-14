@@ -30,9 +30,10 @@ Review code for quality, consistency, and maintainability.
      must pass through a DTO transform in `src/sanity/`. Flag any direct use of Sanity
      document fields in components.
    - **Banner filter:** GROQ queries targeting banner-scoped content must include the correct
-     banner filter for that type's field shape. Types with a `banner` string field use
-     `banner == $banner`; types with a `banners` array field (`campaign`, `storeMessage`) use
-     `$banner in banners[]`. Applying the wrong form silently returns zero results.
+     banner filter for that type's field shape. Types with a `banner` string field
+     (`bannerConfig`, `featuredContent`, `weeklyAdBannerOverride`) use `banner == $banner`;
+     types with a `banners` array field (`campaign`, `storeMessage`) use `$banner in banners[]`.
+     Applying the wrong form silently returns zero results.
    - **No hardcoded IDs:** Flag any hardcoded `projectId`, `dataset`, or `_id` values in
      app code. These belong in environment config, not source.
    - See `docs/sanity-mcp.md` for available MCP tools that can be suggested during review

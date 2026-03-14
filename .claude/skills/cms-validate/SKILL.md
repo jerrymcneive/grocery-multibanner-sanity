@@ -15,9 +15,10 @@ Call `get_schema` (MCP) to retrieve the currently deployed schema for the projec
 Extract all top-level document type names from the result.
 
 ### Step 2 — Read local schema
-Glob `sanity-studio/schemas/**/*.{ts,tsx,js}` and `sanity-studio/schemaTypes/**/*.{ts,tsx,js}`.
-Union all results — this project uses `schemas/` only, but Sanity's default scaffold uses
-`schemaTypes/`; both must be checked so the skill works after any directory restructure.
+Glob `sanity-studio/schemas/**/*.{ts,tsx,js}` (this project's active directory) and, as a
+fallback, `sanity-studio/schemaTypes/**/*.{ts,tsx,js}` (Sanity's default scaffold path — not
+present today, but checked so this skill survives a directory rename). Union all results.
+Expect zero results from `schemaTypes/` in the current repo; that is not an error.
 Extract all `defineType({ name: "..." })` names from the matched files.
 
 ### Step 3 — Diff type names
@@ -36,7 +37,9 @@ For each top-level document type in the deployed schema, run:
 ```groq
 *[_type == "X"][0]{ _id, _type }
 ```
-via `query_documents`. A `null` result is acceptable (no documents yet).
+via `query_documents`. A `null` result is acceptable — it means the type is queryable but has
+no documents yet. This probe confirms reachability only, not content presence; per-banner
+content coverage is checked separately by `/content-health`.
 If `query_documents` returns an authentication or network-level error, abort Step 5 and
 report "Reachability check could not complete — verify project ID, dataset, and MCP auth."
 Only flag a type as unreachable if the query is rejected by the dataset itself (not by a
