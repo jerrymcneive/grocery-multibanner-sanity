@@ -9,7 +9,9 @@
 ## Rules
 1. All CMS data passes through DTO layer
 2. Components receive typed DTOs, never raw Sanity data
-3. Queries use banner parameter for filtering
+3. Queries use banner parameter for filtering — use `banner == $banner` for single-value
+   `banner` fields; use `$banner in banners[]` for multi-value `banners` array fields.
+   Verify field shape in `sanity-studio/schemas/` before writing queries.
 4. Schema changes require migration plan
 5. NEVER bypass the DTO layer — raw Sanity documents must not reach components
 

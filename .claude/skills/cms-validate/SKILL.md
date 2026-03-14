@@ -15,8 +15,10 @@ Call `get_schema` (MCP) to retrieve the currently deployed schema for the projec
 Extract all top-level document type names from the result.
 
 ### Step 2 — Read local schema
-Glob `sanity-studio/schemas/**/*.ts` (check for `sanity-studio/schemaTypes/**/*.ts` as well — some projects use that path).
-Extract all `defineType({ name: "..." })` names from local files.
+Glob `sanity-studio/schemas/**/*.{ts,tsx,js}` and `sanity-studio/schemaTypes/**/*.{ts,tsx,js}`.
+Union all results — this project uses `schemas/` only, but Sanity's default scaffold uses
+`schemaTypes/`; both must be checked so the skill works after any directory restructure.
+Extract all `defineType({ name: "..." })` names from the matched files.
 
 ### Step 3 — Diff type names
 - **Local only (not deployed):** Schema types defined locally but absent from deployed schema.
@@ -34,8 +36,11 @@ For each top-level document type in the deployed schema, run:
 ```groq
 *[_type == "X"][0]{ _id, _type }
 ```
-via `query_documents`. A `null` result is acceptable (no documents yet). An error indicates
-the type is unreachable or the query is malformed.
+via `query_documents`. A `null` result is acceptable (no documents yet).
+If `query_documents` returns an authentication or network-level error, abort Step 5 and
+report "Reachability check could not complete — verify project ID, dataset, and MCP auth."
+Only flag a type as unreachable if the query is rejected by the dataset itself (not by a
+transport/auth layer).
 
 ### Step 6 — Report
 

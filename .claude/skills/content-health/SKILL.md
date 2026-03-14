@@ -12,30 +12,58 @@ Outputs a triage report: critical / warning / info.
 ## Workflow
 
 ### Step 1 — Orphaned drafts
-Query for all draft documents that have no corresponding published document:
+Fetch all drafts and all published doc IDs in two queries, then diff:
+
 ```groq
+// Query A — all drafts
 *[_id in path("drafts.**")]{ _id, _type, _updatedAt }
+
+// Query B — published IDs for those same base IDs
+// (strip "drafts." prefix client-side, then run)
+*[_id in $baseIds]{ _id }
 ```
-A draft is "orphaned" if its base ID (stripping `drafts.` prefix) has no published counterpart.
+
+Build the set of `baseIds` by stripping the `drafts.` prefix from each result of Query A.
+Any baseId not found in Query B result has no published counterpart → orphaned.
 Flag as **warning** — drafts are not errors but may indicate forgotten unpublished work.
+
+Do NOT call `get_document` per draft — use the two-query batch approach above.
 
 ### Step 2 — Broken references
 For each document type that contains reference fields (identified via `get_schema`), query for
 documents where referenced `_ref` values point to non-existent documents.
 
-Strategy: fetch all `_ref` values for a reference field, then verify each referenced ID exists:
+Strategy: fetch all `_ref` values in one query, then validate existence in a second batch query:
 ```groq
+// Query A — collect all ref values
 *[_type == "X" && defined(refField._ref)]{ _id, "ref": refField._ref }
+
+// Query B — check which IDs actually exist (pass collected refs as $ids param)
+*[_id in $ids]{ _id }
 ```
-Then check each `_ref` with `get_document`. Missing documents = broken references.
+Any `_ref` value from Query A absent from Query B results is a broken reference.
 Flag as **critical** — broken references cause runtime errors in the front end.
+
+Do NOT call `get_document` per reference — use the two-query batch approach above.
+
+Known reference fields in this schema (verify against deployed schema for changes):
+- `weeklyAdBannerOverride.weeklyAdBase` → references `weeklyAdBase`
 
 ### Step 3 — Per-banner content coverage
 For each Phase 1 banner (`festival-foods`, `hometown-grocers`), check that banner-scoped
-document types have at least one published document:
+document types have at least one published document. Use the correct filter for each type's
+field shape (field shape differs per type — see `src/sanity/CLAUDE.md` Rule 3):
+
 ```groq
+// Types with single `banner` string field: bannerConfig, featuredContent, weeklyAdBannerOverride
 *[_type == "X" && banner == $banner && !(_id in path("drafts.**"))][0]{ _id }
+
+// Types with `banners` array field: campaign, storeMessage
+*[_type == "X" && $banner in banners[] && !(_id in path("drafts.**"))][0]{ _id }
+
+// weeklyAdBase is not banner-scoped — skip
 ```
+
 Flag as **info** if a banner has zero published documents for a content type — may be expected
 for new banners, but worth surfacing.
 

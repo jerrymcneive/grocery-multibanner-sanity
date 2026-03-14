@@ -15,8 +15,20 @@ Flag any component receiving raw Sanity document shape. All CMS data must pass t
 DTO transform in `src/sanity/`. See `src/sanity/CLAUDE.md` for the DTO pattern.
 
 ### Banner-Filter Mandate
-Flag any GROQ query targeting banner-scoped content types that is missing `banner == $banner`.
-Queries returning all-banner results when a single banner is expected are a correctness bug.
+Flag any GROQ query targeting banner-scoped content types that is missing a banner filter.
+The correct filter depends on the field shape — verify in `sanity-studio/schemas/` before writing:
+
+| Type | Field | Filter |
+|---|---|---|
+| `bannerConfig` | `banner` (string) | `banner == $banner` |
+| `featuredContent` | `banner` (string) | `banner == $banner` |
+| `weeklyAdBannerOverride` | `banner` (string) | `banner == $banner` |
+| `campaign` | `banners` (array) | `$banner in banners[]` |
+| `storeMessage` | `banners` (array) | `$banner in banners[]` |
+| `weeklyAdBase` | none | not banner-scoped; scope comes from its `weeklyAdBannerOverride` |
+
+Applying the wrong form is a correctness bug: `banner == $banner` returns zero results on array
+fields; `$banner in banners[]` errors on string fields. Both failures are silent.
 
 ### MCP Tool Literacy
 
