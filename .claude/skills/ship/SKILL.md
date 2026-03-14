@@ -29,9 +29,11 @@ Before creating or updating a PR.
    This is unconditional — theme changes affect all banners.
 
 5. **Check for Sanity schema changes**
-   If any file in `sanity-studio/schemas/` was modified:
-   → Verify migration plan exists
-   → Check `docs/cms/` for corresponding documentation
+   If any file in `sanity-studio/schemaTypes/` or `sanity-studio/schemas/` was modified:
+   1. Invoke `/cms-validate` — must report **zero schema drift** before continuing.
+      If drift is found, block ship and prompt to run `npx sanity@latest schema deploy`.
+   2. Verify migration docs exist in `docs/` for any removed or renamed fields.
+   Blocks ship if schema drift found or migration docs missing.
 
 6. **Generate PR description**
    Include:

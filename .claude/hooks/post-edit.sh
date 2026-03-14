@@ -29,4 +29,9 @@ if [[ -n "$errors" ]]; then
   echo "$errors"
 fi
 
+# CMS schema/query change — remind to validate
+if [[ "$file_path" == */sanity-studio/* || "$file_path" == */src/sanity/* ]]; then
+  echo "⚠️  CMS file changed: run /cms-validate to check schema drift before shipping."
+fi
+
 exit 0

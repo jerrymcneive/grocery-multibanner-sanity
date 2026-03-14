@@ -11,6 +11,7 @@
 2. Components receive typed DTOs, never raw Sanity data
 3. Queries use banner parameter for filtering
 4. Schema changes require migration plan
+5. NEVER bypass the DTO layer — raw Sanity documents must not reach components
 
 ## Phase 1 Banners
 - festival-foods
@@ -19,3 +20,11 @@
 
 ## DTO Pattern
 Raw Sanity → Transform → Typed DTO → Component
+
+## Sanity MCP Tools
+See `docs/sanity-mcp.md` for the full tool reference.
+
+Rules:
+- ALWAYS call `get_schema` before writing GROQ queries or schema code
+- Use `query_documents` for validation; `semantic_search` for content discovery
+- Load `get_sanity_rules` (sanity-schema rule) before writing any schema code
