@@ -34,6 +34,12 @@ export const weeklyAdBannerOverride = defineType({
       description: 'Overrides the base ad hero for this banner only.',
     }),
     defineField({
+      name: 'heroImageAlt',
+      title: 'Hero Image Alt Text',
+      type: 'string',
+      description: 'Accessibility description for the hero image.',
+    }),
+    defineField({
       name: 'heroHeadline',
       title: 'Hero Headline (Banner-Specific)',
       type: 'string',
@@ -54,6 +60,25 @@ export const weeklyAdBannerOverride = defineType({
         defineField({ name: 'label', type: 'string', title: 'Button Label' }),
         defineField({ name: 'url',   type: 'url',    title: 'Destination URL' }),
       ],
+    }),
+    defineField({
+      name: 'featuredCategories',
+      title: 'Featured Categories',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: 'Meat & Seafood',  value: 'meat' },
+          { title: 'Produce',         value: 'produce' },
+          { title: 'Dairy',           value: 'dairy' },
+          { title: 'Bakery',          value: 'bakery' },
+          { title: 'Beverages',       value: 'beverages' },
+          { title: 'Snacks',          value: 'snacks' },
+          { title: 'Frozen',          value: 'frozen' },
+          { title: 'Deli',            value: 'deli' },
+        ],
+      },
+      description: 'Category spotlights to feature in this banner override.',
     }),
     defineField({
       name: 'featuredItemOverrides',
