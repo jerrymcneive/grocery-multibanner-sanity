@@ -1,7 +1,7 @@
 export const STORE_MESSAGES_QUERY = `
   *[
     _type == "storeMessage" &&
-    $banner in banners &&
+    $banner in banners[] &&
     activeFrom <= $now &&
     activeUntil >= $now &&
     !(_id in path("drafts.**"))

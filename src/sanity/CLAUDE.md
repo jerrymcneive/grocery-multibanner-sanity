@@ -9,8 +9,11 @@
 ## Rules
 1. All CMS data passes through DTO layer
 2. Components receive typed DTOs, never raw Sanity data
-3. Queries use banner parameter for filtering
+3. Queries use banner parameter for filtering — use `banner == $banner` for single-value
+   `banner` fields; use `$banner in banners[]` for multi-value `banners` array fields.
+   Verify field shape in `sanity-studio/schemas/` before writing queries.
 4. Schema changes require migration plan
+5. NEVER bypass the DTO layer — raw Sanity documents must not reach components
 
 ## Phase 1 Banners
 - festival-foods
@@ -19,3 +22,14 @@
 
 ## DTO Pattern
 Raw Sanity → Transform → Typed DTO → Component
+
+## Sanity MCP Tools
+See `docs/sanity-mcp.md` for the full tool reference.
+
+Rules:
+- Call `get_schema` when schema is not in current context, or when writing queries/code that
+  will be committed. Do not re-fetch within a session where schema is already in context.
+  Never assume the current deployed schema matches local files — drift is common.
+- Use `query_documents` for validation; `semantic_search` for content discovery
+- Load `get_sanity_rules` (sanity-schema rule) before writing any schema code
+- Always query live for draft/published state — never rely on session memory for content state

@@ -1,7 +1,7 @@
 export const ACTIVE_CAMPAIGNS_QUERY = `
   *[
     _type == "campaign" &&
-    $banner in banners &&
+    $banner in banners[] &&
     dateTime(startDate) <= dateTime($now) &&
     dateTime(endDate) >= dateTime($now) &&
     !(_id in path("drafts.**"))
