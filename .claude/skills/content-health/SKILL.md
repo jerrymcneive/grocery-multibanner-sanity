@@ -9,6 +9,10 @@ Outputs a triage report: critical / warning / info.
 - When content appears missing or broken in staging/production
 - As part of release readiness checks
 
+> **Always query live.** Draft/published state changes outside the session whenever Studio is
+> open. Never rely on a prior query result or session memory for content state — run fresh
+> queries for each check.
+
 ## Workflow
 
 ### Step 1 — Orphaned drafts

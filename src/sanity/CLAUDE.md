@@ -27,6 +27,9 @@ Raw Sanity → Transform → Typed DTO → Component
 See `docs/sanity-mcp.md` for the full tool reference.
 
 Rules:
-- ALWAYS call `get_schema` before writing GROQ queries or schema code
+- Call `get_schema` when schema is not in current context, or when writing queries/code that
+  will be committed. Do not re-fetch within a session where schema is already in context.
+  Never assume the current deployed schema matches local files — drift is common.
 - Use `query_documents` for validation; `semantic_search` for content discovery
 - Load `get_sanity_rules` (sanity-schema rule) before writing any schema code
+- Always query live for draft/published state — never rely on session memory for content state

@@ -38,6 +38,9 @@ Review code for quality, consistency, and maintainability.
      app code. These belong in environment config, not source.
    - See `docs/sanity-mcp.md` for available MCP tools that can be suggested during review
      (e.g., `query_documents` to validate, `get_schema` to verify field existence).
+   - **Tool scope:** Flag MCP tool use outside the appropriate task class (see `cms-agent.md`
+     tool-class table). A read task calling `publish_documents` is out of scope. A content
+     operation calling `deploy_schema` is a red flag.
 
 ## Checklist
 - [ ] Consistent with codebase
