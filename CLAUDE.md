@@ -33,3 +33,7 @@ NEVER add backend logic — Schnucks owns backend
 NEVER put PII in fixtures, comments, or logs
 NEVER commit with failing tests or type errors
 ALWAYS verify theme changes across all Phase 1 banners (Festival Foods, Hometown Grocers)
+
+## Harness
+Tool test: does it give the model access, or pre-solve a step the model should own?
+Access survives model improvements. Theory fights them.
