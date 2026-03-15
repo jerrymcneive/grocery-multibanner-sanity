@@ -25,10 +25,24 @@ export const bannerConfig = defineType({
       description: 'The banner name as shown to customers (e.g., "Festival Foods").',
     }),
     defineField({
+      name: 'tagline',
+      title: 'Tagline',
+      type: 'string',
+      description: 'Short brand tagline shown to customers.',
+    }),
+    defineField({
       name: 'primaryColor',
       title: 'Primary Brand Color',
       type: 'string',
       description: 'Hex value — e.g., #C8102E',
+      validation: (rule) =>
+        rule.regex(/^#[0-9A-Fa-f]{6}$/).error('Must be a valid hex color'),
+    }),
+    defineField({
+      name: 'secondaryColor',
+      title: 'Secondary Brand Color',
+      type: 'string',
+      description: 'Hex value — e.g., #FFD100',
       validation: (rule) =>
         rule.regex(/^#[0-9A-Fa-f]{6}$/).error('Must be a valid hex color'),
     }),
@@ -46,6 +60,30 @@ export const bannerConfig = defineType({
       name: 'supportEmail',
       title: 'Customer Support Email',
       type: 'string',
+    }),
+    defineField({
+      name: 'regions',
+      title: 'Operating Regions',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: 'Wisconsin',  value: 'Wisconsin' },
+          { title: 'Minnesota',  value: 'Minnesota' },
+          { title: 'Illinois',   value: 'Illinois' },
+          { title: 'Missouri',   value: 'Missouri' },
+          { title: 'Iowa',       value: 'Iowa' },
+          { title: 'Indiana',    value: 'Indiana' },
+        ],
+      },
+      description: 'States where this banner operates.',
+    }),
+    defineField({
+      name: 'storeCount',
+      title: 'Store Count',
+      type: 'number',
+      description: 'Total number of physical store locations.',
+      validation: (rule) => rule.integer().positive(),
     }),
   ],
   preview: {
