@@ -38,11 +38,13 @@ fields; `$banner in banners[]` errors on string fields. Both failures are silent
 Scope tool use to the current task class. All tools are always available, but using tools
 outside the appropriate class adds noise and context cost.
 
+Each row includes all tools from rows above it.
+
 | Task class | Appropriate tools |
 |---|---|
 | **Read / query** | `get_schema`, `query_documents`, `get_document`, `semantic_search` |
 | **Schema development** | above + `get_sanity_rules`, `deploy_schema`, `list_workspace_schemas` |
-| **Content operations** | above + `create_documents_from_json`, `patch_document_from_json`, `publish_documents`, `unpublish_documents`, `discard_drafts` |
+| **Content operations** | above + `create_documents_from_json`, `create_documents_from_markdown`, `patch_document_from_json`, `patch_document_from_markdown`, `publish_documents`, `unpublish_documents`, `discard_drafts` |
 | **Migration** | above + `migration_guide` |
 
 All of these are access tools — they give the model data to reason with. None pre-solve a

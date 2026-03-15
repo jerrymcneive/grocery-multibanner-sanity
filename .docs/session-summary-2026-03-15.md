@@ -79,7 +79,7 @@ same PR that added the harness guidance to catch exactly this class of bug.
 |---|---|
 | `CLAUDE.md` | Added `## Harness` section with access-vs-theory tool test |
 | `.claude/agents/cms-agent.md` | Tool-class table (read / schema dev / content ops / migration); conditional get_schema; multi-step task context convention; live-query mandate |
-| `.claude/agents/code-reviewer.md` | Named all 3 string-field types explicitly; tool-scope review check |
+| `.claude/agents/code-reviewer.md` | Tool-scope review check (flag MCP tool use outside task class) |
 | `.claude/skills/content-health/SKILL.md` | Prominent "always query live" callout; weeklyAdBase skip moved to prose |
 | `src/sanity/CLAUDE.md` | Conditional get_schema rule; live-query note |
 
@@ -105,7 +105,7 @@ main
 ### Harness
 All 8 original plan items delivered and reviewed (2 rounds, 18 issues found and fixed).
 `feature/harness-tool-principles` adds 5 refinements from post-merge conversation;
-PR not yet raised.
+raised as PR #3.
 
 ### Sanity project (15lskz7p / development dataset)
 - **Schema: undeployed.** All 11 types are local-only. `get_schema` returns "no schema deployed".
@@ -156,7 +156,7 @@ All stderr. All branches exit 0.
 ## Next Steps
 
 ### Immediate
-1. Raise PR for `feature/harness-tool-principles` (branch is pushed, not PR'd)
+1. ~~Raise PR for `feature/harness-tool-principles`~~ → PR #3 raised
 2. Deploy schema: `cd sanity-studio && npx sanity@latest schema deploy`
 
 ### Planned (4-task Sanity build + MCP stress test)
