@@ -10,10 +10,10 @@
  * string, replace it with `{ label: <original string> }`. The `url` field is
  * intentionally left absent — authors can fill it in Studio after migration.
  *
- * Run (dry-run first):
- *   npx sanity@latest migration run coerce-cta-string-to-object --dry-run
+ * Run from sanity-studio/ (must be co-located with sanity.cli.ts):
  *
- * Run (live):
+ *   cd sanity-studio
+ *   npx sanity@latest migration run coerce-cta-string-to-object --dry-run
  *   npx sanity@latest migration run coerce-cta-string-to-object
  */
 
