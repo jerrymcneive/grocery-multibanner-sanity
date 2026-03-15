@@ -17,7 +17,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'Spring Into Savings!',
     promotionalCopy: 'Wisconsin\'s freshest deals are here. Stock up on family favorites at prices you\'ll love. Valid Sunday through Saturday at all Festival Foods locations.',
-    callToAction: 'Shop This Week\'s Deals',
+    callToAction: { label: 'Shop This Week\'s Deals' },
     // Note: heroImage would be an asset reference in production
     // For seed data, we'll use a placeholder structure
     heroImageAlt: 'Festival Foods spring produce display',
@@ -51,7 +51,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'Neighbors Helping Neighbors Save',
     promotionalCopy: 'Great prices from your local grocer. We source from Missouri and Kansas farms whenever possible. These deals are our way of saying thanks for shopping local.',
-    callToAction: 'See All Deals',
+    callToAction: { label: 'See All Deals' },
     heroImageAlt: 'Hometown Grocers friendly staff with fresh produce',
     featuredCategories: ['produce', 'deli', 'meat'],
     featuredItemOverrides: [
@@ -83,7 +83,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'Hop Into Easter Savings!',
     promotionalCopy: 'Everything you need for the perfect Easter celebration. From spiral ham to fresh asparagus, we\'ve got your holiday table covered.',
-    callToAction: 'Plan Your Easter Meal',
+    callToAction: { label: 'Plan Your Easter Meal' },
     heroImageAlt: 'Easter ham with spring vegetables',
     featuredCategories: ['meat', 'produce', 'bakery'],
     featuredItemOverrides: [
@@ -109,7 +109,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'A Hometown Easter',
     promotionalCopy: 'Gather around the table with family and friends. Our Easter specials make hosting easy and affordable. Pre-order your ham today!',
-    callToAction: 'Pre-Order Ham',
+    callToAction: { label: 'Pre-Order Ham' },
     heroImageAlt: 'Family enjoying Easter dinner',
     featuredCategories: ['meat', 'deli', 'bakery'],
     featuredItemOverrides: [
@@ -141,7 +141,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'Game Day Deals!',
     promotionalCopy: 'Score big savings on all your March Madness party essentials. Wings, chips, drinks — we\'ve got you covered.',
-    callToAction: 'Shop Party Supplies',
+    callToAction: { label: 'Shop Party Supplies' },
     heroImageAlt: 'Game day snacks spread',
     featuredCategories: ['snacks', 'beverages', 'meat'],
   },
@@ -159,7 +159,7 @@ export const weeklyAdOverrides = [
     },
     heroHeadline: 'Watch Party Ready!',
     promotionalCopy: 'Host the best watch party on the block with these winning deals. Fresh wings, cold drinks, and all the fixings.',
-    callToAction: 'Get Party Ready',
+    callToAction: { label: 'Get Party Ready' },
     heroImageAlt: 'Friends watching basketball with snacks',
     featuredCategories: ['meat', 'snacks', 'beverages'],
   },

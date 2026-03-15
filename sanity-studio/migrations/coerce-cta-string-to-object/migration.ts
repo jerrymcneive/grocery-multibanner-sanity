@@ -25,7 +25,7 @@ export default defineMigration({
 
   migrate: {
     document(doc) {
-      if (typeof doc.callToAction !== 'string') return undefined
+      if (typeof doc.callToAction !== 'string' || doc.callToAction === '') return undefined
 
       return patch(doc._id, [
         at('callToAction', set({ label: doc.callToAction })),

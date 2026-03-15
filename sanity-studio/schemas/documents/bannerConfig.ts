@@ -74,6 +74,7 @@ export const bannerConfig = defineType({
           { title: 'Missouri',   value: 'Missouri' },
           { title: 'Iowa',       value: 'Iowa' },
           { title: 'Indiana',    value: 'Indiana' },
+          { title: 'Kansas',     value: 'Kansas' },
         ],
       },
       description: 'States where this banner operates.',
