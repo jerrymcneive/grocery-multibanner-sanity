@@ -39,3 +39,6 @@ sanity-studio/.sanity/
 .env.local
 .env*.local
 *.env
+
+# User
+.docs
