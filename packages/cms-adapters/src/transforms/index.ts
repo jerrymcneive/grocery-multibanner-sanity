@@ -1,4 +1,5 @@
 // Transform functions: raw Sanity → typed DTO
+export * from './bannerConfig'
 export * from './storeMessage'
 export * from './weeklyAd'
 export * from './campaign'

@@ -1,9 +1,15 @@
 import { createClient } from '@sanity/client'
 
-// Dormant during mock phase — swap getBannerFixtures() for live queries when ready
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+if (!projectId) {
+  throw new Error(
+    'Missing NEXT_PUBLIC_SANITY_PROJECT_ID — copy apps/web/.env.local.example to apps/web/.env.local and fill in your project ID'
+  )
+}
+
 export const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? '',
+  projectId,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'development',
   apiVersion: '2024-01-01',
-  useCdn: true,
+  useCdn: false,
 })
