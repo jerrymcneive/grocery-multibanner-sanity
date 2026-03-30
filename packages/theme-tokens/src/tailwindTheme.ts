@@ -21,6 +21,8 @@ export const tailwindThemeExtension = {
     text: {
       muted: 'var(--color-text-muted)',
     },
+    surface: 'var(--color-surface)',
+    outline: 'var(--color-border)',
   },
   fontFamily: {
     brand: 'var(--font-family)',
