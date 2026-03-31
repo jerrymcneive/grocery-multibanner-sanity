@@ -1,7 +1,7 @@
 export interface RewardsBannerDTO {
   headline: string
-  subhead?: string
-  ctaLabel: string
-  ctaHref: string
-  source?: 'default' | 'override'
+  body?: string
+  ctaLabel?: string
+  ctaUrl?: string
+  imageUrl?: string
 }

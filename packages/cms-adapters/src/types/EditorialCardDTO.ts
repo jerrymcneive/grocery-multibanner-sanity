@@ -1,9 +1,8 @@
 export interface EditorialCardDTO {
-  id: string
-  eyebrow: string
+  eyebrow?: string
   headline: string
-  copy: string
-  ctaLabel: string
-  ctaHref: string
+  body?: string
+  ctaLabel?: string
+  ctaUrl?: string
   imageUrl?: string
 }
