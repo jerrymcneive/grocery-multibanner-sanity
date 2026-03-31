@@ -18,15 +18,19 @@ export function EditorialCard({ card }: EditorialCardProps) {
 
       {/* Copy */}
       <div className="p-5 flex flex-col gap-2 flex-1">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{card.eyebrow}</p>
+        {card.eyebrow && (
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{card.eyebrow}</p>
+        )}
         <h3 className="text-lg font-bold font-brand text-foreground leading-snug">{card.headline}</h3>
-        <p className="text-sm text-text-muted flex-1">{card.copy}</p>
-        <a
-          href={card.ctaHref}
-          className="mt-3 self-start text-sm font-semibold text-primary underline underline-offset-2 hover:no-underline"
-        >
-          {card.ctaLabel} →
-        </a>
+        {card.body && <p className="text-sm text-text-muted flex-1">{card.body}</p>}
+        {card.ctaLabel && card.ctaUrl && (
+          <a
+            href={card.ctaUrl}
+            className="mt-3 self-start text-sm font-semibold text-primary underline underline-offset-2 hover:no-underline"
+          >
+            {card.ctaLabel} →
+          </a>
+        )}
       </div>
     </article>
   )

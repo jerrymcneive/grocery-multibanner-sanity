@@ -9,8 +9,8 @@ export function EditorialCardGrid({ cards }: EditorialCardGridProps) {
   return (
     <section className="bg-background py-10 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        {cards.map((card) => (
-          <EditorialCard key={card.id} card={card} />
+        {cards.map((card, i) => (
+          <EditorialCard key={card.headline ?? i} card={card} />
         ))}
       </div>
     </section>
