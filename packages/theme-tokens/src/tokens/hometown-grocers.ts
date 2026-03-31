@@ -15,4 +15,6 @@ export const hometownGrocersTokens: BannerTokens = {
   radiusCard: '0.25rem',
   radiusButton: '0.25rem',
   heroMinHeight: '400px',
+  colorSurface: '#F9FBF9',
+  colorBorder: '#E5E7EB',
 }

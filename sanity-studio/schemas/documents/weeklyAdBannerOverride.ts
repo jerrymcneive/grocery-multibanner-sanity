@@ -40,6 +40,12 @@ export const weeklyAdBannerOverride = defineType({
       description: 'Accessibility description for the hero image.',
     }),
     defineField({
+      name: 'heroEyebrow',
+      title: 'Hero Eyebrow',
+      type: 'string',
+      description: 'Small label above the headline, e.g. "THIS WEEK\'S DEALS". Leave blank to hide.',
+    }),
+    defineField({
       name: 'heroHeadline',
       title: 'Hero Headline (Banner-Specific)',
       type: 'string',
@@ -54,7 +60,7 @@ export const weeklyAdBannerOverride = defineType({
     }),
     defineField({
       name: 'callToAction',
-      title: 'Call to Action',
+      title: 'Primary Call to Action',
       type: 'object',
       fields: [
         defineField({ name: 'label', type: 'string', title: 'Button Label' }),
@@ -62,23 +68,21 @@ export const weeklyAdBannerOverride = defineType({
       ],
     }),
     defineField({
+      name: 'secondaryCta',
+      title: 'Secondary Call to Action',
+      type: 'object',
+      description: 'e.g. "View Weekly Ad" link beneath the primary button.',
+      fields: [
+        defineField({ name: 'label', type: 'string', title: 'Link Label' }),
+        defineField({ name: 'url',   type: 'url',    title: 'Destination URL' }),
+      ],
+    }),
+    defineField({
       name: 'featuredCategories',
       title: 'Featured Categories',
       type: 'array',
-      of: [{ type: 'string' }],
-      options: {
-        list: [
-          { title: 'Meat & Seafood',  value: 'meat' },
-          { title: 'Produce',         value: 'produce' },
-          { title: 'Dairy',           value: 'dairy' },
-          { title: 'Bakery',          value: 'bakery' },
-          { title: 'Beverages',       value: 'beverages' },
-          { title: 'Snacks',          value: 'snacks' },
-          { title: 'Frozen',          value: 'frozen' },
-          { title: 'Deli',            value: 'deli' },
-        ],
-      },
-      description: 'Category spotlights to feature in this banner override.',
+      of: [{ type: 'categoryShortcut' }],
+      description: 'Category shortcuts shown below the hero. Each entry has a label, emoji, and link.',
     }),
     defineField({
       name: 'featuredItemOverrides',

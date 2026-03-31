@@ -12,4 +12,6 @@ export interface BannerTokens {
   radiusCard: string
   radiusButton: string
   heroMinHeight: string
+  colorSurface: string
+  colorBorder: string
 }

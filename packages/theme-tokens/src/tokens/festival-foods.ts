@@ -15,4 +15,6 @@ export const festivalFoodsTokens: BannerTokens = {
   radiusCard: '0.5rem',
   radiusButton: '0.375rem',
   heroMinHeight: '400px',
+  colorSurface: '#F7F7F7',
+  colorBorder: '#E5E7EB',
 }

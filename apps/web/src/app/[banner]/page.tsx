@@ -1,11 +1,13 @@
 import { notFound } from 'next/navigation'
 import { isValidBanner } from '@/lib/banner/bannerList'
 import { getBannerFixtures } from '@/fixtures/index'
-import { fetchActiveCampaigns } from '@/lib/sanity/fetchers'
+import { AnnouncementStrip } from '@/components/AnnouncementStrip/AnnouncementStrip'
 import { Hero } from '@/components/Hero/Hero'
-import { StoreMessages } from '@/components/StoreMessages/StoreMessages'
-import { WeeklyAdGrid } from '@/components/WeeklyAd/WeeklyAdGrid'
-import { CampaignCarousel } from '@/components/Campaigns/CampaignCarousel'
+import { CategoryShortcuts } from '@/components/CategoryShortcuts/CategoryShortcuts'
+import { EditorialCardGrid } from '@/components/EditorialCardGrid/EditorialCardGrid'
+import { RewardsBanner } from '@/components/RewardsBanner/RewardsBanner'
+import { InfoTileRow } from '@/components/InfoTileRow/InfoTileRow'
+import { HelpBar } from '@/components/layout/HelpBar'
 
 interface BannerPageProps {
   params: { banner: string }
@@ -18,15 +20,24 @@ export default async function BannerPage({ params }: BannerPageProps) {
     notFound()
   }
 
-  const { weeklyAd, storeMessages } = getBannerFixtures(banner)
-  const campaigns = await fetchActiveCampaigns(banner)
+  const {
+    weeklyAd,
+    announcementStrip,
+    categoryShortcuts,
+    editorialCards,
+    rewardsPromo,
+    infoTiles,
+  } = getBannerFixtures(banner)
 
   return (
     <>
+      <AnnouncementStrip strip={announcementStrip} />
       <Hero weeklyAd={weeklyAd} />
-      <CampaignCarousel campaigns={campaigns} />
-      <StoreMessages messages={storeMessages} />
-      <WeeklyAdGrid weeklyAd={weeklyAd} />
+      <CategoryShortcuts shortcuts={categoryShortcuts} />
+      <EditorialCardGrid cards={editorialCards} />
+      <RewardsBanner promo={rewardsPromo} />
+      <InfoTileRow tiles={infoTiles} />
+      <HelpBar />
     </>
   )
 }
