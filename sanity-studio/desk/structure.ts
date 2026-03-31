@@ -11,6 +11,48 @@ export const deskStructure = (S: StructureBuilder) =>
     .title('Content')
     .items([
 
+      // ── Homepage ──────────────────────────────────────────────────────────
+      S.listItem()
+        .title('Homepage')
+        .child(
+          S.list()
+            .title('Homepage')
+            .items(
+              BANNERS.map((b) =>
+                S.listItem()
+                  .title(b.title)
+                  .child(
+                    S.document()
+                      .schemaType('homePageOverride')
+                      .documentId(`home-${b.id}`)
+                      .title(b.title)
+                  )
+              )
+            )
+        ),
+
+      // ── Alert Banner ──────────────────────────────────────────────────────
+      S.listItem()
+        .title('Alert Banner')
+        .child(
+          S.list()
+            .title('Alert Banner')
+            .items(
+              BANNERS.map((b) =>
+                S.listItem()
+                  .title(b.title)
+                  .child(
+                    S.document()
+                      .schemaType('alertBanner')
+                      .documentId(`alert-${b.id}`)
+                      .title(b.title)
+                  )
+              )
+            )
+        ),
+
+      S.divider(),
+
       // ── Weekly Ad ────────────────────────────────────────────────────────
       S.listItem()
         .title('Weekly Ad')
@@ -56,26 +98,6 @@ export const deskStructure = (S: StructureBuilder) =>
                     S.documentTypeList('campaign')
                       .title(`${b.title} Campaigns`)
                       .filter('_type == "campaign" && $bannerId in banners')
-                      .params({ bannerId: b.id })
-                  )
-              )
-            )
-        ),
-
-      // ── Featured Content ──────────────────────────────────────────────────
-      S.listItem()
-        .title('Featured Content')
-        .child(
-          S.list()
-            .title('Featured Content by Banner')
-            .items(
-              BANNERS.map((b) =>
-                S.listItem()
-                  .title(b.title)
-                  .child(
-                    S.documentTypeList('featuredContent')
-                      .title(`${b.title} Featured`)
-                      .filter('_type == "featuredContent" && banner == $bannerId')
                       .params({ bannerId: b.id })
                   )
               )
