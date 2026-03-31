@@ -4,19 +4,15 @@ import { storeMessage }           from './documents/storeMessage'
 import { weeklyAdBase }           from './documents/weeklyAdBase'
 import { weeklyAdBannerOverride } from './documents/weeklyAdBannerOverride'
 import { campaign }               from './documents/campaign'
-import { featuredContent }        from './documents/featuredContent'
-import { announcementStrip }      from './documents/announcementStrip'
 import { infoTileRow }            from './documents/infoTileRow'
-import { rewardsBanner }          from './documents/rewardsBanner'
+import { alertBanner }            from './documents/alertBanner'
+import { homePageOverride }       from './documents/homePageOverride'
 
 // Object types
-import { weeklyAdItem }        from './objects/weeklyAdItem'
-import { heroTile }            from './objects/heroTile'
-import { promotionTile }       from './objects/promotionTile'
-import { recipeTile }          from './objects/recipeTile'
-import { categorySpotlight }   from './objects/categorySpotlight'
-import { categoryShortcut }    from './objects/categoryShortcut'
-import { infoTile }            from './objects/infoTile'
+import { weeklyAdItem }    from './objects/weeklyAdItem'
+import { categoryShortcut } from './objects/categoryShortcut'
+import { infoTile }        from './objects/infoTile'
+import { editorialCard }   from './objects/editorialCard'
 
 export const schemaTypes = [
   // Documents
@@ -25,17 +21,13 @@ export const schemaTypes = [
   weeklyAdBase,
   weeklyAdBannerOverride,
   campaign,
-  featuredContent,
-  announcementStrip,
   infoTileRow,
-  rewardsBanner,
+  alertBanner,
+  homePageOverride,
 
   // Objects (reusable within documents)
   weeklyAdItem,
-  heroTile,
-  promotionTile,
-  recipeTile,
-  categorySpotlight,
   categoryShortcut,
   infoTile,
+  editorialCard,
 ]
