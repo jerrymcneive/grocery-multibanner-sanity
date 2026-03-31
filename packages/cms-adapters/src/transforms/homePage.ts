@@ -1,6 +1,15 @@
+import type { EditorialCardDTO } from '../types/EditorialCardDTO'
 import type { HomePageDTO } from '../types/HomePageDTO'
 
-// Raw shape returned by HOME_PAGE_QUERY — permissive since Sanity fields are all optional until authored
+interface RawEditorialCard {
+  imageUrl?: string
+  eyebrow?: string
+  headline: string
+  body?: string
+  ctaLabel?: string
+  ctaUrl?: string
+}
+
 interface RawHomePage {
   banner: string
   hero?: {
@@ -20,22 +29,8 @@ interface RawHomePage {
   } | null
   quickLinksHeading?: string
   quickLinkTiles?: Array<{ imageUrl?: string; label: string; href: string }>
-  editorialCard1?: {
-    imageUrl?: string
-    eyebrow?: string
-    headline: string
-    body?: string
-    ctaLabel?: string
-    ctaUrl?: string
-  } | null
-  editorialCard2?: {
-    imageUrl?: string
-    eyebrow?: string
-    headline: string
-    body?: string
-    ctaLabel?: string
-    ctaUrl?: string
-  } | null
+  editorialCard1?: RawEditorialCard | null
+  editorialCard2?: RawEditorialCard | null
   rewardsBanner?: {
     headline: string
     body?: string
@@ -45,18 +40,21 @@ interface RawHomePage {
   } | null
 }
 
+function toEditorialCard(raw: RawEditorialCard | null | undefined): EditorialCardDTO {
+  return {
+    imageUrl: raw?.imageUrl,
+    eyebrow: raw?.eyebrow,
+    headline: raw?.headline ?? '',
+    body: raw?.body,
+    ctaLabel: raw?.ctaLabel,
+    ctaUrl: raw?.ctaUrl,
+  }
+}
+
 export function transformHomePage(raw: RawHomePage): HomePageDTO {
   return {
     banner: raw.banner,
-    hero: {
-      imageUrl: raw.hero?.imageUrl,
-      imageAlt: raw.hero?.imageAlt,
-      eyebrow: raw.hero?.eyebrow,
-      headline: raw.hero?.headline,
-      promotionalCopy: raw.hero?.promotionalCopy,
-      callToAction: raw.hero?.callToAction,
-      secondaryCta: raw.hero?.secondaryCta,
-    },
+    hero: raw.hero ?? {},
     priceCallout: raw.priceCallout ?? undefined,
     quickLinksHeading: raw.quickLinksHeading ?? 'Quick Links',
     quickLinkTiles: (raw.quickLinkTiles ?? []).map((t) => ({
@@ -64,22 +62,8 @@ export function transformHomePage(raw: RawHomePage): HomePageDTO {
       imageUrl: t.imageUrl ?? '',
       href: t.href,
     })),
-    editorialCard1: {
-      imageUrl: raw.editorialCard1?.imageUrl,
-      eyebrow: raw.editorialCard1?.eyebrow,
-      headline: raw.editorialCard1?.headline ?? '',
-      body: raw.editorialCard1?.body,
-      ctaLabel: raw.editorialCard1?.ctaLabel,
-      ctaUrl: raw.editorialCard1?.ctaUrl,
-    },
-    editorialCard2: {
-      imageUrl: raw.editorialCard2?.imageUrl,
-      eyebrow: raw.editorialCard2?.eyebrow,
-      headline: raw.editorialCard2?.headline ?? '',
-      body: raw.editorialCard2?.body,
-      ctaLabel: raw.editorialCard2?.ctaLabel,
-      ctaUrl: raw.editorialCard2?.ctaUrl,
-    },
+    editorialCard1: toEditorialCard(raw.editorialCard1),
+    editorialCard2: toEditorialCard(raw.editorialCard2),
     rewardsBanner: {
       headline: raw.rewardsBanner?.headline ?? '',
       body: raw.rewardsBanner?.body,

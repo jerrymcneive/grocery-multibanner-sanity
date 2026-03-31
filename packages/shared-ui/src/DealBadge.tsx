@@ -16,7 +16,7 @@ export function DealBadge({ dealType }: DealBadgeProps) {
   if (!label) return null
 
   return (
-    <span className="bg-accent text-accent-foreground text-xs font-bold px-2 py-0.5 rounded-button">
+    <span className="bg-accent text-accent-foreground text-xs font-semibold px-2 py-0.5 rounded-button">
       {label}
     </span>
   )

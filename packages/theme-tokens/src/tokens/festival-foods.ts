@@ -13,7 +13,7 @@ export const festivalFoodsTokens: BannerTokens = {
   colorTextMuted: '#6B7280',
   fontFamily: 'Inter, sans-serif',
   radiusCard: '0.5rem',
-  radiusButton: '0.375rem',
+  radiusButton: '9999px',
   heroMinHeight: '400px',
   colorSurface: '#F7F7F7',
   colorBorder: '#E5E7EB',

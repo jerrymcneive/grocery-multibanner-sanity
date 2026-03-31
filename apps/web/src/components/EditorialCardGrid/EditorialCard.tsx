@@ -19,7 +19,7 @@ export function EditorialCard({ card }: EditorialCardProps) {
       {/* Copy */}
       <div className="p-5 flex flex-col gap-2 flex-1">
         {card.eyebrow && (
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{card.eyebrow}</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent">{card.eyebrow}</p>
         )}
         <h3 className="text-lg font-bold font-brand text-foreground leading-snug">{card.headline}</h3>
         {card.body && <p className="text-sm text-text-muted flex-1">{card.body}</p>}

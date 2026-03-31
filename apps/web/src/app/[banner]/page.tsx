@@ -23,33 +23,27 @@ export default async function BannerPage({ params }: BannerPageProps) {
     notFound()
   }
 
-  // Fixtures supply out-of-scope sections (announcement, category shortcuts, info tiles, store messages)
-  const { announcementStrip, categoryShortcuts, storeMessages, infoTiles } = getBannerFixtures(banner)
-
-  // Live Sanity data for the five homepage sections
+  const fixtures = getBannerFixtures(banner)
   const homePage = await fetchHomePage(banner)
 
-  // Fixture fallback for editorial cards and rewards promo when Sanity returns null
-  const { editorialCards, rewardsPromo } = getBannerFixtures(banner)
-
-  const hero           = homePage?.hero           ?? { headline: undefined }
-  const priceCallout   = homePage?.priceCallout
-  const quickLinks     = homePage?.quickLinkTiles  ?? []
-  const quickHeading   = homePage?.quickLinksHeading ?? 'Quick Links'
-  const editorialCard1 = homePage?.editorialCard1  ?? editorialCards[0]
-  const editorialCard2 = homePage?.editorialCard2  ?? editorialCards[1]
-  const rewardsBanner  = homePage?.rewardsBanner   ?? rewardsPromo
+  const hero = homePage?.hero ?? { headline: undefined }
+  const priceCallout = homePage?.priceCallout
+  const quickLinks = homePage?.quickLinkTiles ?? []
+  const quickHeading = homePage?.quickLinksHeading ?? 'Quick Links'
+  const editorialCard1 = homePage?.editorialCard1 ?? fixtures.editorialCards[0]
+  const editorialCard2 = homePage?.editorialCard2 ?? fixtures.editorialCards[1]
+  const rewardsBanner = homePage?.rewardsBanner ?? fixtures.rewardsPromo
 
   return (
     <>
-      <AnnouncementStrip strip={announcementStrip} />
+      <AnnouncementStrip strip={fixtures.announcementStrip} />
       <Hero hero={hero} priceCallout={priceCallout} />
-      <CategoryShortcuts shortcuts={categoryShortcuts} />
-      {storeMessages.length > 0 && <StoreMessages messages={storeMessages} />}
+      <CategoryShortcuts shortcuts={fixtures.categoryShortcuts} />
+      {fixtures.storeMessages.length > 0 && <StoreMessages messages={fixtures.storeMessages} />}
       <QuickLinksCarousel heading={quickHeading} tiles={quickLinks} />
       <EditorialCardGrid cards={[editorialCard1, editorialCard2]} />
       <RewardsBanner promo={rewardsBanner} />
-      <InfoTileRow tiles={infoTiles} />
+      <InfoTileRow tiles={fixtures.infoTiles} />
       <HelpBar />
     </>
   )
