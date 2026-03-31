@@ -6,6 +6,12 @@ export const promotionTile = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'eyebrow',
+      title: 'Eyebrow',
+      type: 'string',
+      description: 'Small label above the title, e.g. "Fresh Picks" or "Limited Time".',
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
