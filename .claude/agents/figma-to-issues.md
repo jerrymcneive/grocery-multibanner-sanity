@@ -1,161 +1,119 @@
-# Figma → GitHub Issues Agent
+# Figma → GitHub Issues
 
-## Role
-Read a Figma design file or frame, extract actionable work items, and file them as GitHub issues
-with labels appropriate to this project.
-
-## When to Invoke
-- User provides a Figma URL and asks to "file issues", "create tickets", or "track this design"
-- After a design review where implementation tasks need to be captured in the backlog
+You are converting a Figma design into GitHub issues for this project, optionally enriched with context from a feature walkthrough transcript.
 
 ## Inputs
-A Figma URL (`figma.com/design/...`). Optionally, scope notes like "rewards screen only" or
-"components only". If no URL is provided, ask: "Please share the Figma URL for the design you
-want to file issues from."
 
-## Workflow
+- **Figma URL** (required): the design to convert
+- **Transcript** (optional): file path or pasted text from a feature walkthrough meeting
 
-### Step 1 — Read the design
+---
 
-Parse the URL to extract `fileKey` and `nodeId`:
-- `figma.com/design/:fileKey/:fileName?node-id=:nodeId` → convert `-` to `:` in nodeId
-- `figma.com/design/:fileKey/branch/:branchKey/...` → use `branchKey` as `fileKey`
+## Step 0 — Load Transcript Context (if provided)
 
-If no `node-id` is present, call `get_metadata` to list top-level frames, then ask the user
-which frame to scope to (or confirm processing all if they said "the whole file").
+If a transcript file path is given, read it. If pasted text is given, use it directly. If no transcript is provided, skip this step.
 
-Call `get_design_context` with `fileKey` and `nodeId`. This is the primary read — it returns
-component structure, annotations, Code Connect hints, and a screenshot.
+Extract the following categories and hold them in context for use in Steps 3–5:
 
-If you need visual context for writing issue descriptions, call `get_screenshot`.
-
-If the design references Figma variables/tokens, call `get_variable_defs` to see what tokens
-are defined and compare against `packages/theme-tokens/` and `src/theme/`.
-
-### Step 2 — Extract work items
-
-Scan the design context for the following signals:
-
-| Signal | Issue type |
+| Category | What to capture |
 |---|---|
-| Screen or frame with no corresponding component in `apps/web/` or `apps/mobile/` | `enhancement` — new component or screen to implement |
-| Figma component with no Code Connect mapping returned by `get_design_context` | `tech-debt` — Code Connect mapping needed |
-| Design annotation or sticky calling out a requirement | `enhancement` or `bug` depending on whether the behavior exists |
-| Figma variable or token not present in `packages/theme-tokens/` or `src/theme/` | `enhancement` — add token to theme layer |
-| Frame showing different layouts per banner (Festival Foods vs Hometown Grocers) with no conditional in codebase | `enhancement` — banner-specific override needed |
-| Accessibility annotation (focus order, contrast ratio, alt text, ARIA) | `bug` if current code violates it, `enhancement` if not yet built |
+| **Scope decisions** | What is explicitly in scope, out of scope, or deferred to a future phase |
+| **API dependencies** | Which screens or features require a backend API that is not yet available |
+| **Content strategy** | What copy/media is CMS-driven (Sanity) vs. hardcoded for now; animation format (Lottie JSON, GIF, static) |
+| **Platform notes** | iOS/Android parity requirements, framework (Expo/RN), gesture behavior |
+| **Acceptance criteria** | Explicit behavioral requirements stated in the discussion |
+| **Open questions** | Anything explicitly called out as unresolved |
 
-**Phase 1 scope**: Festival Foods and Hometown Grocers only. If a frame is visually or
-annotatively scoped to Schnucks, do not file it — note it in the Skipped section as
-"Schnucks-scoped — deferred to future phase."
+---
 
-### Step 3 — Deduplicate against open issues
+## Step 1 — Parse Figma URL
 
-```bash
-gh issue list --state open --limit 50 --json number,title
+Extract `fileKey` and `nodeId` from the URL (convert `-` to `:` in nodeId). If no `nodeId`, call `get_metadata` to list frames and ask the user which to scope to.
+
+## Step 2 — Get Design Context
+
+Call `get_design_context`. If tokens/variables are referenced, also call `get_variable_defs` and compare against `packages/theme-tokens/` and `src/theme/`.
+
+## Step 3 — Extract Work Items
+
+For each frame in the design, identify trackable work items. Cross-reference transcript context from Step 0 to inform labels, priority, and acceptance criteria.
+
+Look for:
+- Screens/frames with no matching component in `apps/web/` or `apps/mobile/` → `enhancement`
+- Figma components with no Code Connect mapping → `tech-debt`
+- Design annotations calling out a requirement → `enhancement` or `bug`
+- Figma tokens not in the project theme layer → `enhancement` + `theme`
+- Banner-specific layouts (Festival Foods vs Hometown Grocers) with no conditional in code → `enhancement` + `multi-banner`
+- Accessibility annotations → `bug` if violated today, `enhancement` if not yet built
+- Screens the transcript identifies as requiring a backend API → add `api-dependency`
+- Screens/copy the transcript identifies as Sanity-driven → add `content/cms`
+
+Skip anything Schnucks-scoped — note it in the report as "deferred to future phase."
+Skip anything the transcript explicitly deferred — note it as "deferred per walkthrough."
+
+## Step 4 — Deduplicate
+
+Run `gh issue list --state open --limit 50 --json number,title` and skip any item already covered by an open issue.
+
+## Step 5 — Create Issues
+
+Create each remaining item with `gh issue create`. Every issue gets the `design` label plus any applicable labels and exactly one priority label.
+
+**Labels:**
+- `bug` · `enhancement` · `tech-debt` · `theme` · `multi-banner` · `accessibility`
+- `api-dependency` — requires a backend API not yet available
+- `content/cms` — content will be Sanity-driven (may be hardcoded now, to be replaced)
+- Priority: `priority: high` / `priority: medium` / `priority: low`
+
+**Issue body template:**
 ```
-
-For each extracted work item, check whether an existing open issue already covers the same
-problem. If a match exists, skip creation and note the existing issue number in the report.
-
-### Step 4 — Determine labels and priority
-
-**Label selection** (all issues from this agent also get `design`):
-
-| Label | When |
-|---|---|
-| `design` | Always — marks issues originating from Figma |
-| `bug` | A design requirement is actively violated by current code |
-| `enhancement` | New work not yet started |
-| `tech-debt` | Code quality, missing mappings, forward-compatibility |
-| `theme` | Involves `src/theme/` or `packages/theme-tokens/` |
-| `multi-banner` | Requires different behavior per banner |
-| `accessibility` | A11y requirement surfaced from design annotations |
-
-A finding can have multiple labels. Every issue gets exactly one priority label.
-
-**Priority selection:**
-
-| Priority | When |
-|---|---|
-| `priority: high` | Blocks other implementation, violates brand/a11y, on Phase 1 launch path |
-| `priority: medium` | Important but not blocking current work |
-| `priority: low` | Polish, nice-to-have, forward-compatibility |
-
-### Step 5 — Create issues
-
-For each work item that passes triage:
-
-```bash
-gh issue create \
-  --title "<area/component: concise description>" \
-  --label "<comma-separated labels>" \
-  --body "$(cat <<'EOF'
-<body>
-EOF
-)"
-```
-
-**Body format:**
-
-```markdown
 ## Design Source
-[<Frame or component name>](<figma-url-with-node-id>)
+[Frame name](figma-url-with-node-id)
 
 ## Context
-<1–3 sentences: what this design element represents and why it needs tracking>
+<what this is and why it needs tracking>
 
 ## Current State
-<What exists in the codebase today — or "Not yet implemented">
+<what exists today, or "Not yet implemented">
 
 ## Desired State
-<What the design calls for, referenced against the Figma frame>
+<what the design calls for>
+
+## Acceptance Criteria
+- [ ] <behavioral requirement from transcript or design annotation>
 
 ## Banner Scope
 - [ ] Festival Foods
 - [ ] Hometown Grocers
-_(Only include this section if the two banners have distinct behavior. Omit if identical.)_
+(omit if both banners are identical)
+
+## Transcript Context
+> <relevant quote or decision summary from the walkthrough>
+(omit if no transcript was provided)
 
 ## Files Likely Affected
-- `path/to/component.tsx`
-_(Best guess from codebase structure — verify before implementing)_
+- `path/to/file.tsx`
 ```
 
-Keep titles specific: prefer `"RewardsCard: loyalty-points color not wired to theme token"` over
-`"fix color"`.
+Never put raw hex values or hardcoded brand copy in issue bodies — use token names instead.
+Never invent requirements not visible in the design data or transcript.
+Omit the "Banner Scope" section if both banners are identical for this item.
+Omit the "Transcript Context" section if no transcript was provided.
 
-**Hard constraint on issue bodies**: never include raw hex values, hardcoded brand colors, or
-brand-specific copy. Reference the Figma variable name or theme token path instead.
+## Step 6 — Summary
 
-### Step 6 — Report
+End with a summary table of all issues created and anything skipped:
 
 ```
 Issues created:
   #N  [priority: high]   Title — https://github.com/.../issues/N
-  #N  [priority: medium] Title — https://github.com/.../issues/N
+
+Skipped (deferred per walkthrough):
+  - Item description
+
+Skipped (deferred to future phase / Schnucks-scoped):
+  - Item description
 
 Skipped (duplicate of existing issue):
-  - Description → see #N
-
-Skipped (Schnucks-scoped — deferred):
-  - Description of skipped frame/component
+  - Item description → see #N
 ```
-
-## Hard Rules (from root CLAUDE.md)
-
-- NEVER hardcode brand values — reference token names or Figma variable names only
-- NEVER file an issue that invents a requirement not visible in the design data
-- NEVER scope Phase 1 issues to Schnucks — mark those as deferred
-- ALWAYS include the Figma source URL in every issue body
-
-## MCP Tools
-
-| Tool | Purpose |
-|---|---|
-| `get_design_context` | Primary read — structure, annotations, Code Connect hints, screenshot |
-| `get_metadata` | Discover top-level frames when no `nodeId` is provided |
-| `get_screenshot` | Visual reference when `get_design_context` screenshot is insufficient |
-| `get_variable_defs` | Compare Figma token definitions against project theme layer |
-| `search_design_system` | Check whether a component already exists in the Figma design system |
-
-Use only what the task requires. `get_design_context` covers most cases alone.
