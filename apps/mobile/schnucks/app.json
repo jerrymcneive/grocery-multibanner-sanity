@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Schnucks Rewards",
+    "slug": "schnucks-rewards",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#003087"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.schnucks.rewards",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.schnucks.rewards",
+      "versionCode": 1
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Hometown Grocers Rewards",
+    "slug": "hometown-grocers-rewards",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2D6A3F"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hometowngrocers.rewards",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.hometowngrocers.rewards",
+      "versionCode": 1
+    }
+  }
+}

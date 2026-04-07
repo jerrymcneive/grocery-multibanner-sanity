@@ -1,0 +1,22 @@
+{
+  "name": "@grocery-multibanner/mobile-hometown-grocers",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.tsx",
+  "scripts": {
+    "dev": "expo start",
+    "build": "eas build --platform ios --profile production",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@grocery-multibanner/mobile-app": "workspace:*",
+    "@grocery-multibanner/theme-tokens": "workspace:*",
+    "expo": "^51.0.0",
+    "react": "^18.0.0",
+    "react-native": "^0.74.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Festival Foods Rewards",
+    "slug": "festival-foods-rewards",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#B22222"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.festivalfoods.rewards",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.festivalfoods.rewards",
+      "versionCode": 1
+    }
+  }
+}

@@ -1,4 +1,7 @@
 packages:
   - 'apps/*'
+  - 'apps/mobile/festival-foods'
+  - 'apps/mobile/hometown-grocers'
+  - 'apps/mobile/schnucks'
   - 'packages/*'
   - 'sanity-studio'
